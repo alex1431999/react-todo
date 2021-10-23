@@ -1,26 +1,43 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
+import { Todos, Todo } from './components/todos/todos';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+const todos: Todo[] = [
+  {
+    key: 0,
+    text: 'test',
+  },
+  {
+    key: 1,
+    text: 'test2',
+  }
+]
+
+interface IState {
+  todos: Todo[],
+}
+
+class App extends React.Component<{}, IState> {
+  constructor(props: {}) {
+    super(props);
+
+    this.state = { todos };
+
+    this.onDone = this.onDone.bind(this);
+  }
+
+  onDone(todo: Todo) {
+    const todosFiltered = this.state.todos.filter(todoCurrent => todoCurrent.key !== todo.key);
+    this.setState({ todos: todosFiltered });
+  }
+
+  render() {
+    return (
+      <div className="App">
+        <Todos todos={this.state.todos} onDone={this.onDone}></Todos>
+      </div>
+    );
+  }
 }
 
 export default App;
